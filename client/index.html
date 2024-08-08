@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HW5</title>
     <link rel="stylesheet" href="./css/styles.css">
-    <script src="./js/index.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Abel&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
+    <script src="./js/index.js"></script>
 </head>
 
 <body>
     <header>
-        <h1>Welcome to my dog birthday party page!</h1>
-        <h2>Write down what you wish for him</h2>
+        <h1>Welcome to the wishes page!</h1>
+        <h2>Write down what you wish for yourself</h2>
     </header>
     <main>
         <section id="main_background_image">
@@ -30,24 +32,83 @@
                         <textarea id="wish" name="wish" required></textarea>
                     </div>
                     <div id="wisher_submit">
-                        <button type="submit" id="submit_form"></button>
+                        <button type="submit" class="submit_form"></button>
                     </div>
                 </form>
             </section>
-            <section id="Rendom_images">
-                <div id="img_back">
-                    <div id="img_back1">
-                        <div id="img_back2">
-                            <div id="img_container">
 
-                            </div>
-                        </div>
+            <!-- Added HTML for card background -->
+            <section id="Rendom_images">
+                <div id="img_back" class="card-container">
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card">
+                        <img src="https://picsum.photos/200/300" alt="img_rendom" id="img_rendom">
                     </div>
                 </div>
             </section>
 
-            <section id="birthday_wishes"></section>
+            <section id="birthday_wishes">
+                <ul id="wishes_list">
+                    <li>
+                        <div class="The_wish">
+                            <span>Alon wish</span>
+                            <section id="iconsBTN">
+                                <button class="Edit_wish"><img src="./imges/icons8-edit-30.png" alt="Edit_wish"></button>
+                                <button class="Delete_wish"><img src="./imges/delete.png" alt="Delete_wish"></button>
+                            </section>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="The_wish">
+                            <span>Alon wish</span>
+                            <section id="iconsBTN">
+                                <button class="Edit_wish"><img src="./imges/icons8-edit-30.png" alt="Edit_wish"></button>
+                                <button class="Delete_wish"><img src="./imges/delete.png" alt="Delete_wish"></button>
+                            </section>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="The_wish">
+                            <span>Alon wish</span>
+                            <section id="iconsBTN">
+                                <button class="Edit_wish"><img src="./imges/icons8-edit-30.png" alt="Edit_wish"></button>
+                                <button class="Delete_wish"><img src="./imges/delete.png" alt="Delete_wish"></button>
+                            </section>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="The_wish">
+                            <span>Alon wish</span>
+                            <section id="iconsBTN">
+                                <button class="Edit_wish"><img src="./imges/icons8-edit-30.png" alt="Edit_wish"></button>
+                                <button class="Delete_wish"><img src="./imges/delete.png" alt="Delete_wish"></button>
+                            </section>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="The_wish">
+                            <span>Alon wish</span>
+                            <section id="iconsBTN">
+                                <button class="Edit_wish"><img src="./imges/icons8-edit-30.png" alt="Edit_wish"></button>
+                                <button class="Delete_wish"><img src="./imges/delete.png" alt="Delete_wish"></button>
+                            </section>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="The_wish">
+                            <span>Alon wish</span>
+                            <section id="iconsBTN">
+                                <button class="Edit_wish"><img src="./imges/icons8-edit-30.png" alt="Edit_wish"></button>
+                                <button class="Delete_wish"><img src="./imges/delete.png" alt="Delete_wish"></button>
+                            </section>
+                        </div>
+                    </li>
+                </ul>
+            </section>
         </section>
+    </main>
 </body>
 
 </html>
