@@ -31,7 +31,7 @@ main section#main_background_image {
     width: calc(100%-200px);
     height: 700px;
     margin: 50px 100px;
-    background-image: url('../imges/birthdayBackGroundIMG.jpeg');
+    background-image: url('../imges/disney-wish-movie-2023.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);

@@ -1,8 +1,10 @@
-
 window.onload = function () {
     addListeners();
-    //fetch data from server and use init list function
-    fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
+    fetchWishes();
+};
+
+function fetchWishes() {
+    fetch("http://localhost:8080/api/wishes", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -12,46 +14,34 @@ window.onload = function () {
     }).then(data => {
         initList(data);
     }).catch(err => {
-        console.log(err);
+        console.log("Error fetching wishes: ", err);
+        alert("Failed to fetch wishes. Please try again later.");
     });
-};
+}
 
 function addListeners() {
     let form = document.getElementById("birthday_form");
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent form from submitting traditionally
-        submitWish(); // Call the function to handle the wish submission
-        //reload whises list
-        fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(response => {
-            return response.json();
-        }).then(data => {
-            initList(data);
-        }).catch(err => {
-            console.log(err);
-        });
-    });
-    const updateSubmitBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
-    updateSubmitBTN.addEventListener("click", function (event) {
+    form.addEventListener("submit", async function (event) {
         event.preventDefault();
-        updateWish(updateSubmitBTN.id);
-        //reload whises list
-        fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(response => {
-            return response.json();
-        }).then(data => {
-            initList(data);
-        }).catch(err => {
-            console.log(err);
-        });
+        try {
+            await submitWish(); // Call the function to handle the wish submission
+            fetchWishes(); // Reload wishes list
+        } catch (err) {
+            console.log("Error submitting wish: ", err);
+            alert("Failed to submit wish. Please try again.");
+        }
+    });
+
+    const updateSubmitBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
+    updateSubmitBTN.addEventListener("click", async function (event) {
+        event.preventDefault();
+        try {
+            await updateWish(updateSubmitBTN.id);
+            fetchWishes(); // Reload wishes list
+        } catch (err) {
+            console.log("Error updating wish: ", err);
+            alert("Failed to update wish. Please try again.");
+        }
     });
 }
 
@@ -65,150 +55,140 @@ function initList(data) {
         let wisherName = document.createElement("span");
         let BTNsection = document.createElement("section");
         BTNsection.id = "iconsBTN";
+
         let editBTN = document.createElement("button");
-        editBTN.classList.add("Edit_wish");
-        editBTN.classList.add("BTN");
+        editBTN.classList.add("Edit_wish", "BTN");
         editBTN.id = data[i].id;
-        editBTN.addEventListener("click", function (event) {
+        editBTN.addEventListener("click", function () {
             replaceFormicon(editBTN.id);
         });
+
         let deleteBTN = document.createElement("button");
-        deleteBTN.classList.add("Delete_wish");
-        deleteBTN.classList.add("BTN");
+        deleteBTN.classList.add("Delete_wish", "BTN");
         deleteBTN.id = data[i].id;
-        deleteBTN.addEventListener("click", function (event) {
+        deleteBTN.addEventListener("click", async function (event) {
             event.preventDefault();
-            if(checkIfEditMode()){
-            deleteWish(deleteBTN.id);
+            if (checkIfEditMode()) {
+                try {
+                    await deleteWish(deleteBTN.id);
+                    fetchWishes();
+                } catch (err) {
+                    console.log("Error deleting wish: ", err);
+                    alert("Failed to delete wish. Please try again.");
+                }
             }
         });
-        DeleteIcon = document.createElement("img");
+
+        let DeleteIcon = document.createElement("img");
         DeleteIcon.src = "./imges/delete.png";
-        EditIcon = document.createElement("img");
+        let EditIcon = document.createElement("img");
         EditIcon.src = "./imges/icons8-edit-30.png";
+
         editBTN.appendChild(EditIcon);
         deleteBTN.appendChild(DeleteIcon);
         BTNsection.appendChild(editBTN);
         BTNsection.appendChild(deleteBTN);
+
         wisherName.innerText = data[i].name;
         wisher.appendChild(wisherName);
         wisher.appendChild(BTNsection);
         wish.appendChild(wisher);
         list.appendChild(wish);
     }
-
-    //reload whises list
-    fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        return response.json();
-    }).then(data => {
-        initList(data);
-    }).catch(err => {
-        console.log(err);
-    });
-
 }
 
-function replaceFormicon(id) {
-    let wisherName = document.getElementById("name")
-    let wish = document.getElementById("wish")
+async function replaceFormicon(id) {
+    let wisherName = document.getElementById("name");
+    let wish = document.getElementById("wish");
     let submit = document.getElementsByClassName("submit_form")[0];
     let updateBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
     submit.style.display = "none";
     updateBTN.style.display = "block";
     updateBTN.id = id;
-    fetch(`http://localhost:8080/api/wishes/${id}`, { // Corrected path to /api/wishes
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        return response.json();
-    }).then(data => {
+
+    try {
+        const response = await fetch(`http://localhost:8080/api/wishes/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        const data = await response.json();
         wisherName.value = data[0].name;
         wish.value = data[0].wish;
-    }).catch(err => {
-        console.log(err);
+    } catch (err) {
+        console.log("Error fetching wish by ID: ", err);
+        alert("Failed to load the wish details. Please try again.");
     }
-    );
-
 }
 
+async function submitWish() {
+    let wisherName = document.getElementById("name");
+    let wish = document.getElementById("wish");
+    let wisher = { name: wisherName.value, wish: wish.value };
 
-
-function submitWish() {
-    let wisherName = document.getElementById("name")
-    let wish = document.getElementById("wish")
-    let wisher = {
-        name: wisherName.value,
-        wish: wish.value
-    };
-
-
-    fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(wisher)
-    }).then(response => {
-        return response.json();
-    }).then(data => {
+    try {
+        const response = await fetch("http://localhost:8080/api/wishes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(wisher)
+        });
+        const data = await response.json();
         console.log(data);
-    }).catch(err => {
-        console.log(err);
-    });
-    wisherName.value = "";
-    wish.value = "";
+        wisherName.value = "";
+        wish.value = "";
+    } catch (err) {
+        console.log("Error submitting wish: ", err);
+        alert("Failed to submit wish. Please try again.");
+    }
 }
 
-function updateWish(id) {
-    let wisherName = document.getElementById("name")
-    let wish = document.getElementById("wish")
+async function updateWish(id) {
+    let wisherName = document.getElementById("name");
+    let wish = document.getElementById("wish");
     let submit = document.getElementsByClassName("submit_form")[0];
     let updateBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
-    updateBTN.id=id;
-    //update wish
-    fetch("http://localhost:8080/api/wishes/" + id, { // Corrected path to /api/wishes)
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name: wisherName.value, wish: wish.value })
-    }).then(response => {
-        return response.json();
-    }).then(data => {
-        console.log(data);
-    }).catch(err => {
-        console.log(err);
-    });
-    wisherName.value = "";
-    wish.value = "";
-    submit.style.display = "block";
-    updateBTN.style.display = "none";
+    updateBTN.id = id;
 
+    try {
+        const response = await fetch(`http://localhost:8080/api/wishes/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name: wisherName.value, wish: wish.value })
+        });
+        const data = await response.json();
+        console.log(data);
+        wisherName.value = "";
+        wish.value = "";
+        submit.style.display = "block";
+        updateBTN.style.display = "none";
+    } catch (err) {
+        console.log("Error updating wish: ", err);
+        alert("Failed to update wish. Please try again.");
+    }
 }
 
-function deleteWish(id) {
-    fetch(`http://localhost:8080/api/wishes/${id}`, { // Corrected path to /api/wishes
-        method: "DELETE"
-    }).then(response => {
-        return response.json();
-    }).then(data => {
+async function deleteWish(id) {
+    try {
+        const response = await fetch(`http://localhost:8080/api/wishes/${id}`, {
+            method: "DELETE"
+        });
+        const data = await response.json();
         console.log(data);
-    }).catch(err => {
-        console.log(err);
-    });
+    } catch (err) {
+        console.log("Error deleting wish: ", err);
+        alert("Failed to delete wish. Please try again.");
+    }
 }
 
-function checkIfEditMode(){
+function checkIfEditMode() {
     const updateBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
-    if(updateBTN.style.display === "block"){
-        alert("cant delete in edit mode!");
+    if (updateBTN.style.display === "block") {
+        alert("Can't delete in edit mode!");
         return false;
     }
     return true;
@@ -220,4 +200,3 @@ function changeImgaeRendomAPI() {
     let img = document.getElementById("img_rendom");
     img.src = "https://picsum.photos/200/300?" + new Date().getTime();
 }
-
