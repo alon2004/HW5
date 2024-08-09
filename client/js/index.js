@@ -1,5 +1,19 @@
 window.onload = function() {
     addListeners();
+    //fetch data from server and use init list function
+    fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        return response.json();
+    }).then(data => {
+        initList(data);
+    }).catch(err => {
+        console.log(err);
+    });
+    
 };
 
 function addListeners() {
@@ -23,6 +37,43 @@ function addListeners() {
         });
     }
 }
+
+function initList(data){
+    let list = document.getElementById("wishes_list");
+    list.innerHTML = "";
+    for (let i = 0; i < data.length; i++) {
+        let wish = document.createElement("li");
+        let wisher = document.createElement("div");
+        wisher.className = "The_wish";
+        let wisherName = document.createElement("span");
+        let BTNsection = document.createElement("section");
+        BTNsection.id = "iconsBTN";
+        let editBTN = document.createElement("button");
+        editBTN.classList.add("Edit_wish");
+        editBTN.classList.add("BTN");
+        editBTN.id = data[i].id;
+        let deleteBTN = document.createElement("button");
+        deleteBTN.classList.add("Delete_wish");
+        deleteBTN.classList.add("BTN");
+        deleteBTN.id = data[i].id;
+        DeleteIcon = document.createElement("img");
+        DeleteIcon.src = "./imges/delete.png";
+        EditIcon = document.createElement("img");
+        EditIcon.src = "./imges/icons8-edit-30.png";
+        editBTN.appendChild(EditIcon);
+        deleteBTN.appendChild(DeleteIcon);
+        BTNsection.appendChild(editBTN);
+        BTNsection.appendChild(deleteBTN);
+        wisherName.innerText = data[i].name;
+        wisher.appendChild(wisherName);
+        wisher.appendChild(BTNsection);
+        wish.appendChild(wisher);
+        list.appendChild(wish);
+    }
+    console.log(list);
+
+}
+
 
 
 function submitWish() {
@@ -62,7 +113,7 @@ function updateWish(id) {
         wisherName.value = data[0].name;
         wish.value = data[0].wish;
         let submit = document.getElementsByClassName("submit_form")[0];
-        
+
         
     }).catch(err => {
         console.log(err);

@@ -95,10 +95,16 @@ button.submit_form {
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    background-image: url('../imges/plus-svgrepo-com.svg');
     background-repeat: no-repeat;
     background-size: contain;
     background-color: transparent;
+}
+button.submit_form img{
+    width: 54px;
+    height: 54px;
+}
+button.submit_form#Edit_BTN_submit{
+    display: none;
 }
 
 main section#main_background_image section#Rendom_images {
@@ -216,7 +222,7 @@ main section#main_background_image section#birthday_wishes::-webkit-scrollbar-th
 }
 
 /* Individual buttons */
-.The_wish section#iconsBTN button {
+.The_wish section#iconsBTN button.BTN {
     width: 32px;
     height: 32px;
     border-radius: 5px;
