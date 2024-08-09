@@ -9,7 +9,7 @@ const WishesController = {
             res.json(rows);
             connection.end();
         } catch (error) {
-            console.error(error); // לוג שגיאה
+            console.error(error); 
             res.status(500).json({ message: 'An error occurred while fetching wishes', error });
         }
     },
@@ -21,7 +21,7 @@ const WishesController = {
             res.json(rows);
             connection.end();
         } catch (error) {
-            console.error(error); // לוג שגיאה
+            console.error(error); 
             res.status(500).json({ message: 'An error occurred while fetching the wish', error });
         }
     },
@@ -33,7 +33,7 @@ const WishesController = {
             res.json({ message: 'Wish created successfully', wishId: rows.insertId });
             connection.end();
         } catch (error) {
-            console.error(error); // לוג שגיאה
+            console.error(error); 
             res.status(500).json({ message: 'An error occurred while creating the wish', error });
         }
     },
@@ -45,7 +45,7 @@ const WishesController = {
             res.json({ message: 'Wish updated successfully' });
             connection.end();
         } catch (error) {
-            console.error(error); // לוג שגיאה
+            console.error(error); 
             res.status(500).json({ message: 'An error occurred while updating the wish', error });
         }
     },
@@ -57,7 +57,7 @@ const WishesController = {
             res.json({ message: 'Wish deleted successfully' });
             connection.end();
         } catch (error) {
-            console.error(error); // לוג שגיאה
+            console.error(error); 
             res.status(500).json({ message: 'An error occurred while deleting the wish', error });
         }
     }

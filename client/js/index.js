@@ -4,7 +4,7 @@ window.onload = function () {
 };
 
 function fetchWishes() {
-    fetch("http://localhost:8080/api/wishes", {
+    fetch("https://hw5-nf8c.onrender.com/api/wishes", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -24,8 +24,8 @@ function addListeners() {
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
         try {
-            await submitWish(); // Call the function to handle the wish submission
-            fetchWishes(); // Reload wishes list
+            await submitWish();
+            fetchWishes(); 
         } catch (err) {
             console.log("Error submitting wish: ", err);
             alert("Failed to submit wish. Please try again.");
@@ -37,7 +37,7 @@ function addListeners() {
         event.preventDefault();
         try {
             await updateWish(updateSubmitBTN.id);
-            fetchWishes(); // Reload wishes list
+            fetchWishes();
         } catch (err) {
             console.log("Error updating wish: ", err);
             alert("Failed to update wish. Please try again.");
@@ -107,7 +107,7 @@ async function replaceFormicon(id) {
     updateBTN.id = id;
 
     try {
-        const response = await fetch(`http://localhost:8080/api/wishes/${id}`, {
+        const response = await fetch(`https://hw5-nf8c.onrender.com/api/wishes/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -128,7 +128,7 @@ async function submitWish() {
     let wisher = { name: wisherName.value, wish: wish.value };
 
     try {
-        const response = await fetch("http://localhost:8080/api/wishes", {
+        const response = await fetch("https://hw5-nf8c.onrender.com/api/wishes", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -153,7 +153,7 @@ async function updateWish(id) {
     updateBTN.id = id;
 
     try {
-        const response = await fetch(`http://localhost:8080/api/wishes/${id}`, {
+        const response = await fetch(`https://hw5-nf8c.onrender.com/api/wishes/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -174,7 +174,7 @@ async function updateWish(id) {
 
 async function deleteWish(id) {
     try {
-        const response = await fetch(`http://localhost:8080/api/wishes/${id}`, {
+        const response = await fetch(`https://hw5-nf8c.onrender.com/api/wishes/${id}`, {
             method: "DELETE"
         });
         const data = await response.json();
