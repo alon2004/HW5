@@ -28,15 +28,14 @@ main section#main_background_image {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: calc(100% - 200px);
+    width: calc(100%-200px);
     height: 700px;
-    margin-top: 50px;
-    margin-left: 100px;
+    margin: 50px 100px;
     background-image: url('../imges/birthdayBackGroundIMG.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
-    gap: 82.5px;
+    gap: 30px;
 }
 
 
@@ -99,11 +98,13 @@ button.submit_form {
     background-size: contain;
     background-color: transparent;
 }
-button.submit_form img{
+
+button.submit_form img {
     width: 54px;
     height: 54px;
 }
-button.submit_form#Edit_BTN_submit{
+
+button.submit_form.Edit_BTN_submit {
     display: none;
 }
 
@@ -112,7 +113,7 @@ main section#main_background_image section#Rendom_images {
     flex-wrap: wrap;
     align-items: center;
     justify-items: center;
-    margin-top: -372px;
+    margin-top: -425px;
     border-radius: 10px;
     width: 337px;
     height: 350px;
@@ -132,18 +133,24 @@ main section#main_background_image section#birthday_wishes {
 }
 
 main section#main_background_image section#birthday_wishes::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+    width: 12px;
+    /* Width of the scrollbar */
 }
 
 main section#main_background_image section#birthday_wishes::-webkit-scrollbar-track {
-    background: #171932; /* Background color of the scrollbar track */
-    border-radius: 10px; /* Rounded corners for the scrollbar track */
+    background: #171932;
+    /* Background color of the scrollbar track */
+    border-radius: 10px;
+    /* Rounded corners for the scrollbar track */
 }
 
 main section#main_background_image section#birthday_wishes::-webkit-scrollbar-thumb {
-    background-color: #8d8281; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the scrollbar thumb */
-    border: 3px solid #171932; /* Adds space around the thumb, creating padding effect */
+    background-color: #8d8281;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the scrollbar thumb */
+    border: 3px solid #171932;
+    /* Adds space around the thumb, creating padding effect */
 }
 
 
@@ -180,6 +187,7 @@ main section#main_background_image section#birthday_wishes::-webkit-scrollbar-th
     z-index: 2;
     opacity: 0.7;
 }
+
 .card:nth-child(3) {
     width: 260px;
     height: 310px;
@@ -193,6 +201,7 @@ main section#main_background_image section#birthday_wishes::-webkit-scrollbar-th
     z-index: 3;
     opacity: 1;
 }
+
 .card:nth-child(4) img {
     display: block;
     width: 100%;
@@ -217,8 +226,10 @@ main section#main_background_image section#birthday_wishes::-webkit-scrollbar-th
 /* Buttons container */
 .The_wish section#iconsBTN {
     display: flex;
-    gap: 10px; /* Optional: Add space between buttons */
-    margin-left: auto; /* Pushes the buttons to the right */
+    gap: 10px;
+    /* Optional: Add space between buttons */
+    margin-left: auto;
+    /* Pushes the buttons to the right */
 }
 
 /* Individual buttons */
@@ -234,18 +245,244 @@ main section#main_background_image section#birthday_wishes::-webkit-scrollbar-th
 }
 
 .The_wish section#iconsBTN button.Delete_wish img,
-.The_wish section#iconsBTN button.Edit_wish img {
+.The_wish section#iconsBTN button.Edit_wish img,
+.The_wish section#iconsBTN button.cancel_Edit img {
     width: 100%;
     height: 100%;
 }
 
+.The_wish section#iconsBTN button.cancel_Edit {
+    display: none;
+}
+
+@media screen and (max-width: 1313px) {
+
+    main section#main_background_image {
+        gap: 0px;
+    }
+
+    main section#main_background_image section#Birthday_form {
+        width: 262px;
+        height: 278px;
+    }
+
+    label {
+        color: white;
+        font-size: 1em;
+        margin: 10px 0;
+    }
+
+    textarea#wish {
+        width: 100%;
+        height: 135px;
+    }
 
 
+    main section#main_background_image section#birthday_wishes {
+        width: 262px;
+        height: 278px;
+        max-height: 278px;
+    }
 
 
+    /* Card Overlapping Effect */
+    .card-container {
+        width: 200px;
+        height: 300px;
+    }
+
+    .card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #FD5842;
+        border-radius: 20px;
+    }
+
+    .card:nth-child(1) {
+        width: 200px;
+        height: 140px;
+        z-index: 1;
+        opacity: 0.5;
+    }
+
+    .card:nth-child(2) {
+        width: 180px;
+        height: 170px;
+        z-index: 2;
+        opacity: 0.7;
+    }
+
+    .card:nth-child(3) {
+        width: 160px;
+        height: 210px;
+        z-index: 2;
+        opacity: 0.9;
+    }
+
+    .card:nth-child(4) {
+        width: 130px;
+        height: 260px;
+        z-index: 3;
+        opacity: 1;
+    }
+
+    .card:nth-child(4) img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+    }
+}
+
+@media screen and (max-width: 1068px) {
+    main section#main_background_image section#Birthday_form {
+        width: 200px;
+        height: 217px;
+        margin: 0px;
+    }
+
+    label {
+        color: white;
+        font-size: 0.7em;
+        margin: 10px 0;
+    }
+
+    textarea#wish {
+        width: 100%;
+        height: 85px;
+    }
 
 
+    main section#main_background_image section#birthday_wishes {
+        width: 202px;
+        height: 218px;
+        max-height: 218px;
+        margin: 0px;
+    }
+
+    /* For the wish container */
+    .The_wish {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        font-size: 1.2em;
+        margin: 10px 0;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid white;
+    }
 
 
+    /* Individual buttons */
+    .The_wish section#iconsBTN button.BTN {
+        width: 22px;
+        height: 22px;
+    }
+
+    main section#main_background_image section#Rendom_images {
+        margin-top: -550px;
+        border-radius: 10px;
+        width: 237px;
+        height: 250px;
+    }
+
+    span {
+        font-size: 0.8em;
+    }
+
+}
+
+@media screen and (max-width: 840px) {
+    h1{
+        font-size: 1.5em;
+    }
+    h2{
+        font-size: 1.2em;
+    }
+    main section#main_background_image section#Birthday_form {
+        width: 150px;
+        height: 167px;
+    }
+
+    label {
+        color: white;
+        font-size: 0.5em;
+        margin: 10px 0;
+    }
+
+    textarea#wish {
+        width: 100%;
+        height: 40px;
+    }
 
 
+    main section#main_background_image section#birthday_wishes {
+        width: 152px;
+        height: 168px;
+        max-height: 168px;
+        margin: 0px;
+    }
+
+    /* For the wish container */
+    .The_wish {
+        font-size: 0.5em;
+        margin: 5px 0;
+        padding: 5px;
+    }
+
+
+    /* Individual buttons */
+    .The_wish section#iconsBTN button.BTN {
+        width: 16px;
+        height: 16px;
+    }
+
+    main section#main_background_image section#Rendom_images {
+        margin-top: -550px;
+        border-radius: 10px;
+        width: 187px;
+        height: 200px;
+    }
+
+    span {
+        font-size: 1.2em;
+    }
+
+}
+
+@media screen and (max-width: 700px) {
+    h1{
+        font-size: 1.2em;
+    }
+    h2{
+        font-size: 0.9em;
+    }
+    main section#main_background_image {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px auto;
+        gap: 20px;
+        width: 500px;
+        height: auto
+    }
+
+
+    main section#main_background_image section#Rendom_images {
+        margin-top: 20px;
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+    }
+
+    main section#main_background_image section#birthday_wishes {
+        width: 100%;
+        width: 152px;
+        height: 168px;
+        max-height: 168px;
+        margin-top: 20px;
+    }
+}

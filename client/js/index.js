@@ -1,4 +1,5 @@
-window.onload = function() {
+
+window.onload = function () {
     addListeners();
     //fetch data from server and use init list function
     fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
@@ -13,32 +14,48 @@ window.onload = function() {
     }).catch(err => {
         console.log(err);
     });
-    
 };
 
 function addListeners() {
-    let submit = document.getElementsByClassName("submit_form")[0];
-    submit.addEventListener("click", function(event) {
-        event.preventDefault(); // Prevent form from submitting the traditional way
+    let form = document.getElementById("birthday_form");
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent form from submitting traditionally
         submitWish(); // Call the function to handle the wish submission
+        //reload whises list
+        fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            initList(data);
+        }).catch(err => {
+            console.log(err);
+        });
     });
-    let deleteBTN = document.getElementsByClassName("Delete_wish");
-    for (let i = 0; i < deleteBTN.length; i++) {
-        deleteBTN[i].addEventListener("click", function(event) {
-            event.preventDefault();
-            deleteWish(event.target.id);
+    const updateSubmitBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
+    updateSubmitBTN.addEventListener("click", function (event) {
+        event.preventDefault();
+        updateWish(updateSubmitBTN.id);
+        //reload whises list
+        fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            initList(data);
+        }).catch(err => {
+            console.log(err);
         });
-    }
-    let updateBTN = document.getElementsByClassName("Edit_wish");
-    for (let i = 0; i < updateBTN.length; i++) {
-        updateBTN[i].addEventListener("click", function(event) {
-            event.preventDefault();
-            updateWish(event.target.id);
-        });
-    }
+    });
 }
 
-function initList(data){
+function initList(data) {
     let list = document.getElementById("wishes_list");
     list.innerHTML = "";
     for (let i = 0; i < data.length; i++) {
@@ -52,10 +69,19 @@ function initList(data){
         editBTN.classList.add("Edit_wish");
         editBTN.classList.add("BTN");
         editBTN.id = data[i].id;
+        editBTN.addEventListener("click", function (event) {
+            replaceFormicon(editBTN.id);
+        });
         let deleteBTN = document.createElement("button");
         deleteBTN.classList.add("Delete_wish");
         deleteBTN.classList.add("BTN");
         deleteBTN.id = data[i].id;
+        deleteBTN.addEventListener("click", function (event) {
+            event.preventDefault();
+            if(checkIfEditMode()){
+            deleteWish(deleteBTN.id);
+            }
+        });
         DeleteIcon = document.createElement("img");
         DeleteIcon.src = "./imges/delete.png";
         EditIcon = document.createElement("img");
@@ -70,7 +96,45 @@ function initList(data){
         wish.appendChild(wisher);
         list.appendChild(wish);
     }
-    console.log(list);
+
+    //reload whises list
+    fetch("http://localhost:8080/api/wishes", { // Corrected path to /api/wishes
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        return response.json();
+    }).then(data => {
+        initList(data);
+    }).catch(err => {
+        console.log(err);
+    });
+
+}
+
+function replaceFormicon(id) {
+    let wisherName = document.getElementById("name")
+    let wish = document.getElementById("wish")
+    let submit = document.getElementsByClassName("submit_form")[0];
+    let updateBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
+    submit.style.display = "none";
+    updateBTN.style.display = "block";
+    updateBTN.id = id;
+    fetch(`http://localhost:8080/api/wishes/${id}`, { // Corrected path to /api/wishes
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        return response.json();
+    }).then(data => {
+        wisherName.value = data[0].name;
+        wish.value = data[0].wish;
+    }).catch(err => {
+        console.log(err);
+    }
+    );
 
 }
 
@@ -103,26 +167,34 @@ function submitWish() {
 }
 
 function updateWish(id) {
-    const getWish= fetch("http://localhost:8080/api/wishes/" + id, { // Corrected path to /api/wishes
-        method: "GET"
+    let wisherName = document.getElementById("name")
+    let wish = document.getElementById("wish")
+    let submit = document.getElementsByClassName("submit_form")[0];
+    let updateBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
+    updateBTN.id=id;
+    //update wish
+    fetch("http://localhost:8080/api/wishes/" + id, { // Corrected path to /api/wishes)
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: wisherName.value, wish: wish.value })
     }).then(response => {
         return response.json();
     }).then(data => {
-        let wisherName = document.getElementById("name")
-        let wish = document.getElementById("wish")
-        wisherName.value = data[0].name;
-        wish.value = data[0].wish;
-        let submit = document.getElementsByClassName("submit_form")[0];
-
-        
+        console.log(data);
     }).catch(err => {
         console.log(err);
     });
+    wisherName.value = "";
+    wish.value = "";
+    submit.style.display = "block";
+    updateBTN.style.display = "none";
 
 }
 
 function deleteWish(id) {
-    fetch("http://localhost:8080/api/wishes/" + id, { // Corrected path to /api/wishes
+    fetch(`http://localhost:8080/api/wishes/${id}`, { // Corrected path to /api/wishes
         method: "DELETE"
     }).then(response => {
         return response.json();
@@ -133,9 +205,19 @@ function deleteWish(id) {
     });
 }
 
+function checkIfEditMode(){
+    const updateBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
+    if(updateBTN.style.display === "block"){
+        alert("cant delete in edit mode!");
+        return false;
+    }
+    return true;
+}
+
 setInterval(changeImgaeRendomAPI, 10000);
 
 function changeImgaeRendomAPI() {
     let img = document.getElementById("img_rendom");
     img.src = "https://picsum.photos/200/300?" + new Date().getTime();
 }
+
