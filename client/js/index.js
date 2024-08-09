@@ -126,7 +126,10 @@ async function submitWish() {
     let wisherName = document.getElementById("name");
     let wish = document.getElementById("wish");
     let wisher = { name: wisherName.value, wish: wish.value };
-
+    if(wisher.name === "" || wisher.wish === "") {
+        alert("Please fill in all fields.");
+        return;
+    }
     try {
         const response = await fetch("https://hw5-nf8c.onrender.com/api/wishes", {
             method: "POST",
@@ -151,7 +154,10 @@ async function updateWish(id) {
     let submit = document.getElementsByClassName("submit_form")[0];
     let updateBTN = document.getElementsByClassName("Edit_BTN_submit")[0];
     updateBTN.id = id;
-
+    if(wisherName.value === "" || wish.value === "") {
+        alert("Please fill in all fields.");
+        return;
+    }
     try {
         const response = await fetch(`https://hw5-nf8c.onrender.com/api/wishes/${id}`, {
             method: "PUT",
